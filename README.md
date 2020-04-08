@@ -1,5 +1,5 @@
 # HTML-Form-to-Google-Sheets
-Submit an HTML Form to Google Sheets
+Submit HTML Form to Google Sheets
 
 <i>Steps:</i>
 
