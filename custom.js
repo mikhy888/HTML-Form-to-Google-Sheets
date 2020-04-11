@@ -20,36 +20,23 @@ $.fn.serializeObject = function() {
 	return o;
 };
 
-// email vallidation
-function validateEmail($email) {
-  var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-  return emailReg.test( $email );
+//submitting to google sheet
+var jqxhr = function() {
+    $.ajax({
+        url: url,
+        method: "GET",
+        dataType: "json",
+        data: $form.serializeObject()
+      }).success(function(value){
+          if(value.result == 'success') {
+              window.location = "https://paygcc.com/beta/thankyou.php";
+          }
+      });
 }
-
-// number only inpu field
-function setInputFilter(textbox, inputFilter) {
-  ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
-    textbox.addEventListener(event, function() {
-      if (inputFilter(this.value)) {
-        this.oldValue = this.value;
-        this.oldSelectionStart = this.selectionStart;
-        this.oldSelectionEnd = this.selectionEnd;
-      } else if (this.hasOwnProperty("oldValue")) {
-        this.value = this.oldValue;
-        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
-      } else {
-        this.value = "";
-      }
-    });
-  });
-}
-
-// number only input field init
-setInputFilter(document.getElementById("intTextBox"), function(value) {
-  return /^-?\d*$/.test(value); });
   
  //form validation and submission to gogole sheet
-	$(".submit").click(function(){
+$(document).ready(function(){
+$(".submit").click(function(){
 	    $('.error').text("");
 	    if( $('[name ="name"]').val() == "" ) {
 	      $('[name ="name"]').next(".error").text("Please enter the name!");
@@ -67,19 +54,23 @@ setInputFilter(document.getElementById("intTextBox"), function(value) {
 	      $('.c-error').text("Please check captcha!");
 	      return false;
 	    }else {
-	       
-          var jqxhr = $.ajax({
-            url: url,
-            method: "GET",
-            dataType: "json",
-            data: $form.serializeObject()
-          })
-          .done(function(textStatus){
-            if (textStatus.result ) {
-                 return true;
-            }
-          });
-          
+	        
+		/*submitting for sending mail*/
+		$.ajax({
+		   type: "POST",
+		   url: "ajaxsubmit.php",
+		   data: $form.serializeObject(),
+		   cache: false,
+		   success: function(result){
+		       jqxhr();
+		   }
+		});
+		    
+          	return false;
+         	
 	    }
   });
+	
+
+});
 
