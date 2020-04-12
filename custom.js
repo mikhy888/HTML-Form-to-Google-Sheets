@@ -27,11 +27,11 @@ var jqxhr = function() {
         method: "GET",
         dataType: "json",
         data: $form.serializeObject()
-      }).success(function(value){
+      });/*.success(function(value){
           if(value.result == 'success') {
-              window.location = "https://paygcc.com/beta/thankyou.php";
+              window.location = "[location url]";
           }
-      });
+      });*/
 }
   
  //form validation and submission to gogole sheet
@@ -63,7 +63,10 @@ $(".submit").click(function(){
 		   cache: false,
 		   success: function(result){
 		       jqxhr();
-		   }
+		       setTimeout(function(){
+			window.location = "[location url]";    
+		       },200);
+		    }
 		});
 		    
           	return false;
